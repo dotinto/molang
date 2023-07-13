@@ -1,0 +1,25 @@
+{
+  "name": "molang",
+  "version": "1.0.0",
+  "description": "Multi-purpose chat-bot for Discord",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dotinto/molang.git"
+  },
+  "author": "dxtintx",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dotinto/molang/issues"
+  },
+  "homepage": "https://github.com/dotinto/molang#readme",
+  "devDependencies": {
+    "eslint": "^8.44.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.11.0"
+  }
+}
