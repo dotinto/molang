@@ -18,7 +18,7 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
 client.commands = new Collection();
 const commands = [];
 const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.exe.js'));
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
 	const filePath = path.join(commandsPath, file);
@@ -47,6 +47,7 @@ for (const file of commandFiles) {
 })();
 
 client.on(Events.InteractionCreate, async interaction => {
+	console.log(interaction.user.username + ": /" + interaction.commandName)
 	if (!interaction.isCommand()) return;
 	if (!interaction.isChatInputCommand()) return;
 	const command = interaction.client.commands.get(interaction.commandName);
