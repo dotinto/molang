@@ -52,18 +52,26 @@ module.exports = {
 				}
 			} else {
 				var user = res.data[0]
+				if (res.data[0].banned) {
+				    return interaction.reply({
+				        embeds: [
+				            new EmbedBuilder()
+				            .setDescription(template.icon.n + " Нажаль, профіль користувача " + target.username + " недоступний для публічного перегляду. Зверніться до адміністрації для деталей.")
+				        ], ephemeral: true
+				    })
+				}
 				interaction.reply({
 					embeds: [
 						new EmbedBuilder()
 						.setDescription(template.molang + "\n\n"
-						+ user.displayName + " \n\n" + getBadges(user.badges))
+						+ user.displayName + " " + getBadges(user.badges))
 						.addFields(
 							[{
 								name: "Опис",
 								value: user.description
 							},
 							{
-								name: "Ідентифікаційний № профілю",
+								name: "Ідентифікаційний номер профілю",
 								value: String(user.id)
 							},
 							{
@@ -72,13 +80,13 @@ module.exports = {
 							},
 							{
 								name: "Баланс",
-								value: template.icon.cash + " " 
-								+ String(user.cash) + "\n" + template.icon.bank + " " 
+								value: template.icon.bank + " " 
 								+ String(user.bank) + "\n" + template.icon.crypto + " " 
 								+ String(user.crypto)
 							}]
 						)
 						.setThumbnail(user.avatarURL)
+						.setImage(user.bannerURL)
 					], ephemeral: true
 				})
 			}

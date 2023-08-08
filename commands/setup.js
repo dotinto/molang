@@ -34,7 +34,9 @@ module.exports = {
 				cash: 0,
 				bank: 0,
 				crypto: 0,
-				avatarURL: interaction.user.displayAvatarURL()
+				avatarURL: interaction.user.displayAvatarURL(),
+				banned: false,
+				createdTimestamp: Date.now()
 			}, {
 				headers: {
 					"Authorization": "Bearer " + apiToken

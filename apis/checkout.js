@@ -5,36 +5,42 @@ var temp = require("../templates.js")
 function write(spend, sum, currency, description, host) {
 	if (spend) {
 		return new EmbedBuilder()
-		.setTitle("Списание со счёта")
+		.setTitle("Списання коштів")
 		.addFields([
 			{
-				name: "Сумма",
+				name: "Сума",
 				value: sum + " " + temp.icon[currency]
 			},
 			{
-				name: "Назначение",
+				name: "Призначення",
 				value: description || "Нету"
+			},
+			{
+				name: "Дата",
+				value: "<t:" + Math.floor(Date.now() / 1000) + ":R>"
 			}
 		])
-		.setTimestamp()
 	} else if (!spend) {
 		return new EmbedBuilder()
-		.setTitle("Пополнение счёта")
+		.setTitle("Поповнення рахунку")
         .addFields([
         	{
-        		name: "Отправитель",
+        		name: "Відправник",
         		value: host
         	},
             {
-                name: "Сумма",
-                value: sum + " " + temp.icon[currency]
+                name: "Сума",
+                value: String(sum) + " " + temp.icon[currency]
             },
             {
-                name: "Назначение",
+                name: "Призначення",
                 value: description || "Нету"
+            },
+            {
+            	name: "Дата",
+            	value: "<t:" + Math.floor(Date.now() / 1000) + ":R>"
             }
         ])
-        .setTimestamp()
 	} else {
 		return undefined
 	}

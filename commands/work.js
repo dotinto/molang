@@ -10,7 +10,7 @@ const template = require("../templates.js")
 module.exports = {
 	data: new SlashCommandBuilder()
 	.setName("work")
-	.setDescription("Працювати"),
+	.setDescription("Заробити кошти"),
 	async execute(interaction, client) {
 		await axios.get(apiKey + "/users?where[discordId][eq]=" + interaction.user.id, {
 			headers: {
@@ -26,8 +26,21 @@ module.exports = {
 			        ], ephemeral: true
 			    })
 			} else {
-				var sum = Math.floor(Math.random() * 500000);
+				if (JSON.parse(res.data[0].timeout).work > Date.now()) {
+					return interaction.reply({
+						embeds: [
+							new EmbedBuilder()
+							.setDescription(template.icon.n + " Наразі діє відлік до нового використання вами команди work: `" + Math.floor( (JSON.parse(res.data[0].timeout).work - Date.now()) / 1000) + " секунд`")
+						], ephemeral: true
+					})
+				}
+				var newTimeout1 = Date.now() + 3600000
+				var newTimeout2 = JSON.parse(res.data[0].timeout)
+				newTimeout2.work = newTimeout1
+				var newTimeout = JSON.stringify(newTimeout2)
+				var sum = Math.floor(Math.random() * 12000);
 				await axios.put(apiKey + "/users/" + res.data[0].id, {
+					timeout: newTimeout,
 					bank: res.data[0].bank += sum
 				}, {
 					headers: {
