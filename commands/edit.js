@@ -34,7 +34,7 @@ module.exports = {
 		.setDescription("Посилання на банер")
 	),
 	async execute(interaction, client) {
-		
+		await interaction.deferReply()
 		await axios.get(apiKey + "/users?where[discordId][eq]=" + interaction.user.id,
 		{
 			headers: {
@@ -43,7 +43,7 @@ module.exports = {
 		})
 		.then(res => {
 			if (!res.data[0]) {
-					interaction.reply({
+					interaction.editReply({
 						embeds: [
 							new EmbedBuilder()
 							.setDescription(template.icon.n + " Отакої! Схоже, що у Вас ще немає профілю.")
@@ -58,7 +58,7 @@ module.exports = {
 
 				if (interaction.options.getString("displayname") != null &&
 				interaction.options.getString("displayname").match(reg)) {
-					return interaction.reply({
+					return interaction.editReply({
 						embeds: [
 							new EmbedBuilder()
 							.setDescription(template.icon.n + " Нове відображене ім'я не може містити емодзі, що форматуються.")
@@ -66,13 +66,13 @@ module.exports = {
 					})
 				} else
 				if (!user.premium && interaction.options.getString("banner_url")) {
-					return interaction.reply({
+					return interaction.editReply({
 						embeds: [
 							new EmbedBuilder()
 							.setDescription(template.icon.n + " Для зміни або встановлення баннеру необхідно мати активну підписку " + template.molang + " " + template.magic)
 						], ephemeral: true
 					})
-				} else return;
+				}
 				
 				axios.put(apiKey + "/users/" + user.id, {
 					displayName: _dn,
@@ -84,7 +84,7 @@ module.exports = {
 						"Authorization": "Bearer " + apiToken
 					}
 				}).then(() => {
-					interaction.reply({
+					interaction.editReply({
 						embeds: [
 							new EmbedBuilder()
 							.setDescription(template.icon.y + " Зміни збережено.")
@@ -94,7 +94,7 @@ module.exports = {
 			}
 		})
 		.catch(err => {
-			interaction.reply({
+			interaction.editReply({
 				embeds: [
 					new EmbedBuilder()
 					.setDescription(template.icon.n + template.resp.err)

@@ -40,6 +40,7 @@ module.exports = {
 		.setDescription("Призначення")
 	),
 	async execute(interaction, client) {
+		await interaction.deferReply()
 		var target = interaction.options.getUser("user")
 		var _sum = interaction.options.getInteger("sum")
 		var _currency = interaction.options.getString("currency")
@@ -52,7 +53,7 @@ module.exports = {
 		})
 		.then(async host => {
 			if (!host.data[0]) {
-				interaction.reply({
+				interaction.editReply({
 					embeds: [
 						new EmbedBuilder()
 						.setDescription(template.icon.n + " Отакої! Схоже, що у Вас ще немає профілю.")
@@ -66,26 +67,26 @@ module.exports = {
 				})
 				.then(async user => {
 					if (!user.data[0]) {
-						interaction.reply({
-						    embeds: [
-						        new EmbedBuilder()
-						        .setDescription(template.icon.n + " Отакої! Схоже, що у користувача " + target.username + " ще немає профілю.")
-						    ], ephemeral: true
+						interaction.editReply({
+							embeds: [
+								new EmbedBuilder()
+								.setDescription(template.icon.n + " Отакої! Схоже, що у користувача " + target.username + " ще немає профілю.")
+							], ephemeral: true
 						})
 					} else {
 						if (_currency == "bank") {
-							if (host.data[0].bank < _sum) {
-								interaction.reply({
+							if (eval(host.data[0].bank) < _sum) {
+								interaction.editReply({
 									embeds: [
 										new EmbedBuilder()
 										.setDescription(template.icon.n + " Недостатньо коштів.")
 									], ephemeral: true
 								})
 							} else {
-								var newBank = user.data[0].bank += _sum;
-								var oldBank = host.data[0].bank -= _sum;
+								var newBank = eval(user.data[0].bank) + _sum;
+								var oldBank = eval(host.data[0].bank) - _sum;
 								await axios.put(apiKey + "/users/" + host.data[0].id, {
-									bank: oldBank
+									bank: String(oldBank)
 								}, {
 									headers: {
 										"Authorization": "Bearer " + apiToken
@@ -97,7 +98,7 @@ module.exports = {
 									]
 								})
 								await axios.put(apiKey + "/users/" + user.data[0].id, {
-									bank: newBank
+									bank: String(newBank)
 								}, {
 									headers: {
 										"Authorization": "Bearer " + apiToken
@@ -108,7 +109,7 @@ module.exports = {
 										checkout(false, _sum, "bank", _description, host.data[0].displayName)
 									]
 								})
-								interaction.reply({
+								interaction.editReply({
 									embeds: [
 										new EmbedBuilder()
 										.setDescription(template.icon.y + " Операція виконана.")
@@ -117,62 +118,62 @@ module.exports = {
 							}
 						} else if (_currency == "crypto") {
 							if (host.data[0].crypto < _sum) {
-							    interaction.reply({
-							        embeds: [
-							            new EmbedBuilder()
-							            .setDescription(template.icon.n + " Недостатньо коштів.")
-							        ], ephemeral: true
-							    })
+								interaction.editReply({
+									embeds: [
+										new EmbedBuilder()
+										.setDescription(template.icon.n + " Недостатньо коштів.")
+									], ephemeral: true
+								})
 							} else {
-							    var newBank = user.data[0].crypto += _sum;
-							    var oldBank = host.data[0].crypto -= _sum;
-							    await axios.put(apiKey + "/users/" + host.data[0].id, {
-							        crypto: oldBank
-							    }, {
-							        headers: {
-							            "Authorization": "Bearer " + apiToken
-							        }
-							    })
-							    client.users.cache.get(host.data[0].discordId).send({
-							        embeds: [
-							            checkout(true, _sum, "crypto", _description)
-							        ]
-							    })
-							    await axios.put(apiKey + "/users/" + user.data[0].id, {
-							        crypto: newBank
-							    }, {
-							        headers: {
-							            "Authorization": "Bearer " + apiToken
-							        }
-							    })
-							    client.users.cache.get(user.data[0].discordId).send({
-							        embeds: [
-							            checkout(false, _sum, "crypto", _description, host.data[0].displayName)
-							        ]
-							    })
-							    interaction.reply({
-							        embeds: [
-							            new EmbedBuilder()
-							            .setDescription(template.icon.y + " Операція виконана.")
-							        ], ephemeral: true
-							    })
+								var newBank = eval(user.data[0].crypto) + _sum;
+								var oldBank = eval(host.data[0].crypto) - _sum;
+								await axios.put(apiKey + "/users/" + host.data[0].id, {
+									crypto: String(oldBank)
+								}, {
+									headers: {
+										"Authorization": "Bearer " + apiToken
+									}
+								})
+								client.users.cache.get(host.data[0].discordId).send({
+									embeds: [
+										checkout(true, _sum, "crypto", _description)
+									]
+								})
+								await axios.put(apiKey + "/users/" + user.data[0].id, {
+									crypto: String(newBank)
+								}, {
+									headers: {
+										"Authorization": "Bearer " + apiToken
+									}
+								})
+								client.users.cache.get(user.data[0].discordId).send({
+									embeds: [
+										checkout(false, _sum, "crypto", _description, host.data[0].displayName)
+									]
+								})
+								interaction.editReply({
+									embeds: [
+										new EmbedBuilder()
+										.setDescription(template.icon.y + " Операція виконана.")
+									], ephemeral: true
+								})
 							}
 						}
 					}
 				})
 				.catch(err => {
-					interaction.reply({
-					    embeds: [
-					        new EmbedBuilder()
-					        .setDescription(template.icon.n + template.resp.err)
-					    ], ephemeral: true
+					interaction.editReply({
+						embeds: [
+							new EmbedBuilder()
+							.setDescription(template.icon.n + template.resp.err)
+						], ephemeral: true
 					})
 					console.error(err)
 				})
 			}
 		})
 		.catch(err => {
-			interaction.reply({
+			interaction.editReply({
 				embeds: [
 					new EmbedBuilder()
 					.setDescription(template.icon.n + template.resp.err)

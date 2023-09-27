@@ -11,7 +11,8 @@ module.exports = {
 	data: new SlashCommandBuilder()
 	.setName("setup")
 	.setDescription("Встановлення профілю користувача"),
-	async execute(interaction, client) {
+	async execute(interaction) {
+		await interaction.deferReply()
 		await axios.get(apiKey + "/users?where[discordId][eq]=" + interaction.user.id, {
 			headers: {
 				"Authorization": "Bearer " + apiToken
@@ -25,32 +26,35 @@ module.exports = {
 				discordId: interaction.user.id,
 				verified: false,
 				premium: false,
+				premiumExpires: 0,
 				badges: JSON.stringify([]),
 				timeout: JSON.stringify({
 					work: 0,
 					rob: 0,
 					crime: 0
 				}),
-				cash: 0,
-				bank: 0,
-				crypto: 0,
-				avatarURL: interaction.user.displayAvatarURL(),
+				cash: "0",
+				bank: "0",
+				crypto: "0",
 				banned: false,
-				createdTimestamp: Date.now()
+				createdTimestamp: Date.now(),
+				chatLevel: 0,
+				chatLevelPoints: 0,
+				chatLevelTier: 0
 			}, {
 				headers: {
 					"Authorization": "Bearer " + apiToken
 				}
 			}).then(() => {
 				console.log("New user: ", interaction.user.id)
-				interaction.reply({
+				interaction.editReply({
 					embeds: [
 						new EmbedBuilder()
 						.setDescription(template.icon.y + " Профіль користувача створено.")
 					], ephemeral: true
 				})
 			}).catch(err => {
-				interaction.reply({
+				interaction.editReply({
 					embeds: [
 						new EmbedBuilder()
 						.setDescription(template.icon.n + " Щось пішло не так! Помилка направлена до відділу спеціалістів. ^-^")
@@ -59,7 +63,7 @@ module.exports = {
 				console.error(err)
 			})
 			} else {
-				interaction.reply({
+				interaction.editReply({
 					embeds: [
 						new EmbedBuilder()
 						.setDescription(template.icon.n + " Отакої! Схоже, що Ви вже маєте профіль користувача.")
@@ -67,14 +71,15 @@ module.exports = {
 				})
 			}
 		})
-		.catch(err => {
-			interaction.reply({
+		.catch((err) => {
+			interaction.editReply({
 				embeds: [
 					new EmbedBuilder()
-					.setDescription(template.icon.n + " Отакої! Якась помилка. ^-^")
+					.setDescription(template.icon.n + template.resp.err)
 				], ephemeral: true
 					
 			})
+			console.log(err)
 		})
 	}
 }

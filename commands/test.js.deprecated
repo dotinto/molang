@@ -1,4 +1,4 @@
-const {
+/*const {
 	SlashCommandBuilder
 } = require("discord.js")
 const checkout = require("../apis/checkout.js")
@@ -14,3 +14,4 @@ module.exports = {
 		})
 	}
 }
+*/

@@ -13,6 +13,7 @@ module.exports = {
 	.setName("status")
 	.setDescription("Requesting bot status"),
 	async execute(interaction, client) {
+		await interaction.deferReply()
 		await axios.get(APIKEY + "/users", {
 			headers: {
 				"Authorization": "Bearer " + APITOKEN
@@ -20,7 +21,7 @@ module.exports = {
 		}).then(res => {
 			var endat = Date.now();
 			var resPing = endat - startat
-			interaction.reply({
+			interaction.editReply({
 				embeds: [
 					new EmbedBuilder()
 					.setDescription(templates.molang + "\nЧас обробки сервера (обидві сторони): `" + resPing + "ms`" + `\nЧас обміну даними між client/api:\` ${Date.now() - interaction.createdTimestamp}ms/${Math.round(client.ws.ping)}ms\``)

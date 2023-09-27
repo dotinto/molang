@@ -16,9 +16,9 @@ module.exports = {
 		.setRequired(true)
 	),
 	async execute(interaction) {
-	
+		await interaction.deferReply();
 		if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-			interaction.reply({
+			interaction.editReply({
 				embeds: [
 					new EmbedBuilder()
 					.setDescription(template.icon.n + " Ні-ні! Тобі таке не можна!")
@@ -26,7 +26,7 @@ module.exports = {
 			})
 		} else {
 			if (interaction.options.getInteger("count") > 100) {
-				interaction.reply({
+				interaction.editReply({
 					embeds: [
 						new EmbedBuilder()
 						.setDescription(template.icon.n + " Ого! А не багато?")
@@ -35,7 +35,7 @@ module.exports = {
 			} else {
 				interaction.channel.messages.fetch({limit: interaction.options.getInteger("count")})
 				.then(messages => interaction.channel.bulkDelete(messages, true))
-				interaction.reply({
+				interaction.editReply({
 					embeds: [
 						new EmbedBuilder()
 						.setDescription(template.icon.y + " Я прибрав " + interaction.options.getInteger("count") + " повідомлень.")

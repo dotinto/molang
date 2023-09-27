@@ -12,6 +12,7 @@ module.exports = {
 	.setName("work")
 	.setDescription("Заробити кошти"),
 	async execute(interaction, client) {
+		await interaction.deferReply();
 		await axios.get(apiKey + "/users?where[discordId][eq]=" + interaction.user.id, {
 			headers: {
 				"Authorization": "Bearer " + apiToken
@@ -19,15 +20,15 @@ module.exports = {
 		})
 		.then(async res => {
 			if (!res.data[0]) {
-				interaction.reply({
-			        embeds: [
-			            new EmbedBuilder()
-			            .setDescription(template.icon.n + " Отакої! Схоже, що у Вас ще немає профілю.")
-			        ], ephemeral: true
-			    })
+				interaction.editReply({
+					embeds: [
+						new EmbedBuilder()
+						.setDescription(template.icon.n + " Отакої! Схоже, що у Вас ще немає профілю.")
+					], ephemeral: true
+				})
 			} else {
 				if (JSON.parse(res.data[0].timeout).work > Date.now()) {
-					return interaction.reply({
+					return interaction.editReply({
 						embeds: [
 							new EmbedBuilder()
 							.setDescription(template.icon.n + " Наразі діє відлік до нового використання вами команди work: `" + Math.floor( (JSON.parse(res.data[0].timeout).work - Date.now()) / 1000) + " секунд`")
@@ -41,24 +42,24 @@ module.exports = {
 				var sum = Math.floor(Math.random() * 12000);
 				await axios.put(apiKey + "/users/" + res.data[0].id, {
 					timeout: newTimeout,
-					bank: res.data[0].bank += sum
+					bank: String(eval(res.data[0].bank) += sum)
 				}, {
 					headers: {
 						"Authorization": "Bearer " + apiToken
 					}
 				}).then(r => {
-					interaction.reply({
+					interaction.editReply({
 						embeds: [
 							new EmbedBuilder()
 							.setDescription(template.icon.y + " Ви заробили " + sum + " " +  template.icon.cash)
 						], ephemeral: true
 					})
 				}).catch(err => {
-					interaction.reply({
-					    embeds: [
-					        new EmbedBuilder()
-					        .setDescription(template.icon.n + template.resp.err)
-					    ], ephemeral: true
+					interaction.editReply({
+						embeds: [
+							new EmbedBuilder()
+							.setDescription(template.icon.n + template.resp.err)
+						], ephemeral: true
 					})
 					console.error(err)
 				})

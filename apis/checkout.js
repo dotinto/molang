@@ -9,15 +9,18 @@ function write(spend, sum, currency, description, host) {
 		.addFields([
 			{
 				name: "Сума",
-				value: sum + " " + temp.icon[currency]
+				value: sum + " " + temp.icon[currency],
+				inline: true
 			},
 			{
 				name: "Призначення",
-				value: description || "Нету"
+				value: description || "Нету",
+				inline: true
 			},
 			{
 				name: "Дата",
-				value: "<t:" + Math.floor(Date.now() / 1000) + ":R>"
+				value: "<t:" + Math.floor(Date.now() / 1000) + ":R>",
+				inline: true
 			}
 		])
 	} else if (!spend) {
@@ -26,19 +29,23 @@ function write(spend, sum, currency, description, host) {
         .addFields([
         	{
         		name: "Відправник",
-        		value: host
+        		value: host,
+        		inline: true
         	},
             {
                 name: "Сума",
-                value: String(sum) + " " + temp.icon[currency]
+                value: String(sum) + " " + temp.icon[currency],
+                inline: true
             },
             {
                 name: "Призначення",
-                value: description || "Нету"
+                value: description || "Нету",
+                inline: true
             },
             {
             	name: "Дата",
-            	value: "<t:" + Math.floor(Date.now() / 1000) + ":R>"
+            	value: "<t:" + Math.floor(Date.now() / 1000) + ":R>",
+            	inline: true
             }
         ])
 	} else {
