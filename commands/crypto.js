@@ -17,7 +17,7 @@ const checkout = require("../apis/checkout.js")
 module.exports = {
 	data: new SlashCommandBuilder()
 	.setName("crypto")
-	.setDescription("Інформація про Molang Crypto."),
+	.setDescription("Информация о Molang Crypto."),
 	async execute(interaction, client) {
 		await interaction.deferReply();
 		await axios.get(apiKey + "/crypto?max=updatedAt",
@@ -41,7 +41,7 @@ module.exports = {
 				}).then(user => {
 					var updated = "<t:" + Math.floor(s.data[0].updatedAt / 1000) + ":R>"
 					var buyButton = new ButtonBuilder()
-					.setLabel("Купити")
+					.setLabel("Купить")
 					.setCustomId("buy")
 					.setStyle(ButtonStyle.Success)
 					.setEmoji("1137712961855688714")
@@ -49,7 +49,7 @@ module.exports = {
 						buyButton.setDisabled(true)
 					}
 					var sellButton = new ButtonBuilder()
-					.setLabel("Продати")
+					.setLabel("Продать")
 					.setCustomId("sell")
 					.setStyle(ButtonStyle.Danger)
 					.setEmoji("1137711911543263271")
@@ -61,11 +61,11 @@ module.exports = {
 							new EmbedBuilder()
 							.addFields([
 								{
-									name: "Ціна",
+									name: "Цена",
 									value: s.data[0].price + " " + template.icon.bank
 								},
 								{
-									name: "Оновлено",
+									name: "Обновлено",
 									value: updated
 								}
 							])
@@ -79,10 +79,11 @@ module.exports = {
 							if (i.customId == "sell") {
 								var modal = new ModalBuilder()
 								.setCustomId("modal")
-								.setTitle("Продати Molang Crypto")
+								.setTitle("Продать Molang Crypto")
 								var count = new TextInputBuilder()
 								.setStyle(TextInputStyle.Short)
-								.setLabel("Кількість")
+								.setLabel("Количество")
+								.setRequired(true)
 								.setCustomId("count")
 
 								modal.addComponents(new ActionRowBuilder().addComponents(count))
@@ -97,7 +98,7 @@ module.exports = {
 											await mresm.reply({
 												embeds: [
 													new EmbedBuilder()
-													.setDescription(template.icon.n + " Введіть коректне число.")
+													.setDescription(template.icon.n + " Введите коректное число.")
 												], ephemeral: true
 											})
 										} else {
@@ -105,7 +106,7 @@ module.exports = {
 												await mresm.reply({
 													embeds: [
 														new EmbedBuilder()
-														.setDescription(template.icon.n + " Недостатньо коштів.")
+														.setDescription(template.icon.n + " Недостаточно средств.")
 													], ephemeral: true
 												})
 											} else {
@@ -128,7 +129,7 @@ module.exports = {
 													await mresm.reply({
 														embeds: [
 															new EmbedBuilder()
-															.setDescription(template.icon.y + " Операція пройшла успішно.")
+															.setDescription(template.icon.y + " Операция прошла успешно.")
 														], ephemeral: true
 													})
 												})
@@ -139,10 +140,10 @@ module.exports = {
 							} else if (i.customId == "buy") {
 								var modalb = new ModalBuilder()
 								.setCustomId("modalb")
-								.setTitle("Купити Molang Crypto")
+								.setTitle("Купить Molang Crypto")
 								var countb = new TextInputBuilder()
 								.setStyle(TextInputStyle.Short)
-								.setLabel("Кількість")
+								.setLabel("Количество")
 								.setCustomId("countb")
 								
 								modalb.addComponents(new ActionRowBuilder().addComponents(countb))
@@ -157,7 +158,7 @@ module.exports = {
 											mresm.reply({
 												embeds: [
 													new EmbedBuilder()
-													.setDescription(template.icon.n + " Введіть коректне число.")
+													.setDescription(template.icon.n + " Введите коректное число.")
 												], ephemeral: true
 											})
 										} else {
@@ -166,7 +167,7 @@ module.exports = {
 												mresm.reply({
 													embeds: [
 														new EmbedBuilder()
-														.setDescription(template.icon.n + " Недостатньо коштів.")
+														.setDescription(template.icon.n + " Недостаточно средств.")
 													], ephemeral: true
 												})
 											} else {
@@ -189,7 +190,7 @@ module.exports = {
 													mresm.reply({
 														embeds: [
 															new EmbedBuilder()
-															.setDescription(template.icon.y + " Операція пройшла успішно.")
+															.setDescription(template.icon.y + " Операция прошла успешно.")
 														], ephemeral: true
 													})
 												})

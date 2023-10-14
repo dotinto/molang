@@ -12,28 +12,28 @@ var reg = new RegExp(/<:[^:]+:\d+>/g);
 module.exports = {
 	data: new SlashCommandBuilder()
 	.setName("edit")
-	.setDescription("Редагувати публічні дані.")
+	.setDescription("Редактировать публичные данные.")
 	.addStringOption(
 		option => option
 		.setName("displayname")
-		.setDescription("Відображене ім'я")
+		.setDescription("Отображаемое имя")
 	)
 	.addStringOption(
 		option => option
 		.setName("description")
-		.setDescription("Опис профілю")
+		.setDescription("Описание профиля")
 	)
 	.addStringOption(
 		option => option
 		.setName("avatar_url")
-		.setDescription("Посилання на аватар")
+		.setDescription("Ссылка на аватарку")
 	)
 	.addStringOption(
 		option => option
 		.setName("banner_url")
-		.setDescription("Посилання на банер")
+		.setDescription("Ссылка на баннер")
 	),
-	async execute(interaction, client) {
+	async execute(interaction) {
 		await interaction.deferReply()
 		await axios.get(apiKey + "/users?where[discordId][eq]=" + interaction.user.id,
 		{
@@ -46,7 +46,7 @@ module.exports = {
 					interaction.editReply({
 						embeds: [
 							new EmbedBuilder()
-							.setDescription(template.icon.n + " Отакої! Схоже, що у Вас ще немає профілю.")
+							.setDescription(template.icon.n + " Упс! Похоже, что у вас еще нет профиля.")
 						], ephemeral: true
 					})
 			} else {
@@ -61,7 +61,7 @@ module.exports = {
 					return interaction.editReply({
 						embeds: [
 							new EmbedBuilder()
-							.setDescription(template.icon.n + " Нове відображене ім'я не може містити емодзі, що форматуються.")
+							.setDescription(template.icon.n + " Новое отображаемое имя не может содержать емодзи, которые форматируються.")
 						], ephemeral: true
 					})
 				} else
@@ -69,7 +69,7 @@ module.exports = {
 					return interaction.editReply({
 						embeds: [
 							new EmbedBuilder()
-							.setDescription(template.icon.n + " Для зміни або встановлення баннеру необхідно мати активну підписку " + template.molang + " " + template.magic)
+							.setDescription(template.icon.n + " Для изменения баннера профиля необходимо иметь подписку Magic")
 						], ephemeral: true
 					})
 				}
@@ -87,7 +87,7 @@ module.exports = {
 					interaction.editReply({
 						embeds: [
 							new EmbedBuilder()
-							.setDescription(template.icon.y + " Зміни збережено.")
+							.setDescription(template.icon.y + " Изменения сохранены.")
 						], ephemeral: true
 					})
 				})

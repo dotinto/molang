@@ -11,11 +11,11 @@ const checkout = require("../apis/checkout.js")
 module.exports = {
 	data: new SlashCommandBuilder()
 	.setName("transfer")
-	.setDescription("Передати грошові одиниці іншій особі.")
+	.setDescription("Передать деньги.")
 	.addUserOption(
 		option => option
 		.setName("user")
-		.setDescription("Користувач")
+		.setDescription("Пользователь")
 		.setRequired(true)
 	)
 	.addIntegerOption(
@@ -44,7 +44,7 @@ module.exports = {
 		var target = interaction.options.getUser("user")
 		var _sum = interaction.options.getInteger("sum")
 		var _currency = interaction.options.getString("currency")
-		var _description = interaction.options.getString("description") || "Не вказано"
+		var _description = interaction.options.getString("description") || "Не указано"
 		await axios.get(apiKey + "/users?where[discordId][eq]=" + interaction.user.id,
 		{
 			headers: {
@@ -56,7 +56,7 @@ module.exports = {
 				interaction.editReply({
 					embeds: [
 						new EmbedBuilder()
-						.setDescription(template.icon.n + " Отакої! Схоже, що у Вас ще немає профілю.")
+						.setDescription(template.icon.n + " Упс! Похоже, что у вас еще нет профиля.")
 					], ephemeral: true
 				})
 			} else {
@@ -70,7 +70,7 @@ module.exports = {
 						interaction.editReply({
 							embeds: [
 								new EmbedBuilder()
-								.setDescription(template.icon.n + " Отакої! Схоже, що у користувача " + target.username + " ще немає профілю.")
+								.setDescription(template.icon.n + " Упс! Похоже, что у пользователя " + target.username + " еще нет профиля.")
 							], ephemeral: true
 						})
 					} else {
@@ -79,7 +79,7 @@ module.exports = {
 								interaction.editReply({
 									embeds: [
 										new EmbedBuilder()
-										.setDescription(template.icon.n + " Недостатньо коштів.")
+										.setDescription(template.icon.n + " Недостаточно средств.")
 									], ephemeral: true
 								})
 							} else {
@@ -112,7 +112,7 @@ module.exports = {
 								interaction.editReply({
 									embeds: [
 										new EmbedBuilder()
-										.setDescription(template.icon.y + " Операція виконана.")
+										.setDescription(template.icon.y + " Операция прошла успешно.")
 									], ephemeral: true
 								})
 							}
@@ -121,7 +121,7 @@ module.exports = {
 								interaction.editReply({
 									embeds: [
 										new EmbedBuilder()
-										.setDescription(template.icon.n + " Недостатньо коштів.")
+										.setDescription(template.icon.n + " Недостаточно средств.")
 									], ephemeral: true
 								})
 							} else {
@@ -154,7 +154,7 @@ module.exports = {
 								interaction.editReply({
 									embeds: [
 										new EmbedBuilder()
-										.setDescription(template.icon.y + " Операція виконана.")
+										.setDescription(template.icon.y + " Операция прошла успешно.")
 									], ephemeral: true
 								})
 							}

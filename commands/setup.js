@@ -50,14 +50,14 @@ module.exports = {
 				interaction.editReply({
 					embeds: [
 						new EmbedBuilder()
-						.setDescription(template.icon.y + " Профіль користувача створено.")
+						.setDescription(template.icon.y + " Профиль пользователя создан.")
 					], ephemeral: true
 				})
 			}).catch(err => {
 				interaction.editReply({
 					embeds: [
 						new EmbedBuilder()
-						.setDescription(template.icon.n + " Щось пішло не так! Помилка направлена до відділу спеціалістів. ^-^")
+						.setDescription(template.icon.n + template.resp.err)
 					], ephemeral: true
 				})
 				console.error(err)
@@ -66,7 +66,7 @@ module.exports = {
 				interaction.editReply({
 					embeds: [
 						new EmbedBuilder()
-						.setDescription(template.icon.n + " Отакої! Схоже, що Ви вже маєте профіль користувача.")
+						.setDescription(template.icon.n + " Упс! Похоже, у вас уже есть профиль.")
 					], ephemeral: true
 				})
 			}

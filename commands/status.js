@@ -18,13 +18,13 @@ module.exports = {
 			headers: {
 				"Authorization": "Bearer " + APITOKEN
 			}
-		}).then(res => {
+		}).then(() => {
 			var endat = Date.now();
 			var resPing = endat - startat
 			interaction.editReply({
 				embeds: [
 					new EmbedBuilder()
-					.setDescription(templates.molang + "\nЧас обробки сервера (обидві сторони): `" + resPing + "ms`" + `\nЧас обміну даними між client/api:\` ${Date.now() - interaction.createdTimestamp}ms/${Math.round(client.ws.ping)}ms\``)
+					.setDescription(templates.molang + "\nВремя обработки сервера (обе стороны): `" + resPing + "ms`" + `\nВремя обмена данными, client/api:\` ${Date.now() - interaction.createdTimestamp}ms/${Math.round(client.ws.ping)}ms\``)
 				], ephemeral: true
 			})
 		})

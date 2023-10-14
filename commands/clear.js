@@ -8,12 +8,11 @@ const template = require("../templates.js")
 module.exports = {
 	data: new SlashCommandBuilder()
 	.setName("clear")
-	.setDescription("Прибрати в кімнаті")
-	.name_localizations({ru: "очистить"})
+	.setDescription("Удалить сообщения")
 	.addIntegerOption(
 		option => option
 		.setName("count")
-		.setDescription("Кількість повідомлень (не більше 100)")
+		.setDescription("Количество (не больше 100)")
 		.setRequired(true)
 	),
 	async execute(interaction) {
@@ -22,7 +21,7 @@ module.exports = {
 			interaction.editReply({
 				embeds: [
 					new EmbedBuilder()
-					.setDescription(template.icon.n + " Ні-ні! Тобі таке не можна!")
+					.setDescription(template.icon.n + " Нет-нет! Тебе такого нельзя!")
 				], ephemeral: true
 			})
 		} else {
@@ -30,7 +29,7 @@ module.exports = {
 				interaction.editReply({
 					embeds: [
 						new EmbedBuilder()
-						.setDescription(template.icon.n + " Ого! А не багато?")
+						.setDescription(template.icon.n + " Ого! А не много?")
 					], ephemeral: true
 				})
 			} else {
@@ -39,7 +38,7 @@ module.exports = {
 				interaction.editReply({
 					embeds: [
 						new EmbedBuilder()
-						.setDescription(template.icon.y + " Я прибрав " + interaction.options.getInteger("count") + " повідомлень.")
+						.setDescription(template.icon.y + " Я убрал " + interaction.options.getInteger("count") + " сообщений.")
 					], ephemeral: true
 				})
 			}

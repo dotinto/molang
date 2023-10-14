@@ -19,12 +19,12 @@ function getBadges(query) {
 module.exports = {
 	data: new SlashCommandBuilder()
 	.setName("profile")
-	.setDescription("Показати профіль користувача.")
+	.setDescription("Показать профиль пользователя.")
 	.addUserOption(
 		option => option
 		.setName("user")
-		.setDescription("Користувач")
-	),
+		.setDescription("Пользователь")
+		),
 	async execute(interaction) {
 		await interaction.deferReply();
 		var target = interaction.options.getUser("user") || interaction.user
@@ -48,14 +48,14 @@ module.exports = {
 					interaction.editReply({
 						embeds: [
 							new EmbedBuilder()
-							.setDescription(template.icon.n + " Отакої! Схоже, що у Вас ще немає профілю.")
+							.setDescription(template.icon.n + " Упс! Похоже, что у вас еще нет профиля.")
 						], ephemeral: true
 					})
 				} else {
 					interaction.editReply({
 						embeds: [
 							new EmbedBuilder()
-							.setDescription(template.icon.n + " Отакої! Схоже, що у користувача " + target.username  + " ще немає профілю.")
+							.setDescription(template.icon.n + " Упс! Похоже, что у пользователя " + target.username  + " еще нет профиля.")
 						], ephemeral: true
 					})
 				}
@@ -65,7 +65,7 @@ module.exports = {
 					return interaction.editReply({
 						embeds: [
 							new EmbedBuilder()
-							.setDescription(template.icon.n + " Нажаль, профіль користувача " + target.username + " недоступний для публічного перегляду. Зверніться до адміністрації для деталей.")
+							.setDescription(template.icon.n + " К сожалению, профиль пользователя " + target.username + " недоступный для просмотра. Обратитесь к администрации для деталей.")
 						], ephemeral: true
 					})
 				}
@@ -84,7 +84,7 @@ module.exports = {
 						+ user.displayName + " " + getBadges(user.badges))
 						.addFields(
 							[{
-								name: "Опис",
+								name: "Описание",
 								value: user.description,
 								inline: true
 							},
@@ -95,18 +95,18 @@ module.exports = {
 								+ user.crypto,
 								inline: true
 							}, {
-								name: "Рівень",
+								name: "Уровень",
 								value: prestige + " " + levels[user.chatLevel].name,
 								inline: true
 							},
 							{
-								name: "Ідентифікаційний номер профілю",
+								name: "Номер профиля",
 								value: String(user.id),
 								inline: true
 							},
 							{
-								name: "Організація",
-								value: (user.organizationId == 0) ? "Немає" : "Не визначено",
+								name: "Организация",
+								value: (user.organizationId == 0) ? "Нету" : "Не определено",
 								inline: true
 							}]	
 						)

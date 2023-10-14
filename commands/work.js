@@ -10,7 +10,7 @@ const template = require("../templates.js")
 module.exports = {
 	data: new SlashCommandBuilder()
 	.setName("work")
-	.setDescription("Заробити кошти"),
+	.setDescription("Заработать денег"),
 	async execute(interaction, client) {
 		await interaction.deferReply();
 		await axios.get(apiKey + "/users?where[discordId][eq]=" + interaction.user.id, {
@@ -23,7 +23,7 @@ module.exports = {
 				interaction.editReply({
 					embeds: [
 						new EmbedBuilder()
-						.setDescription(template.icon.n + " Отакої! Схоже, що у Вас ще немає профілю.")
+						.setDescription(template.icon.n + " Упс! Похоже, что у вас еще нет профиля.")
 					], ephemeral: true
 				})
 			} else {
@@ -31,7 +31,7 @@ module.exports = {
 					return interaction.editReply({
 						embeds: [
 							new EmbedBuilder()
-							.setDescription(template.icon.n + " Наразі діє відлік до нового використання вами команди work: `" + Math.floor( (JSON.parse(res.data[0].timeout).work - Date.now()) / 1000) + " секунд`")
+							.setDescription(template.icon.n + " Для команды work, вам осталось подождать еще: `" + Math.floor( (JSON.parse(res.data[0].timeout).work - Date.now()) / 1000) + " секунд`")
 						], ephemeral: true
 					})
 				}
@@ -51,7 +51,7 @@ module.exports = {
 					interaction.editReply({
 						embeds: [
 							new EmbedBuilder()
-							.setDescription(template.icon.y + " Ви заробили " + sum + " " +  template.icon.cash)
+							.setDescription(template.icon.y + " Вы заработали " + sum + " " +  template.icon.cash)
 						], ephemeral: true
 					})
 				}).catch(err => {
