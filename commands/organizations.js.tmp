@@ -87,8 +87,7 @@ module.exports = {
 		.setDescription("Видалити організацію")
 	),
 	async execute(interaction) {
-		await interaction.deferReply()
-		await axios.get(APIKEY + "/users?where[discordId][eq]=" + interaction.user.id, {
+		axios.get(APIKEY + "/users?where[discordId][eq]=" + interaction.user.id, {
 			headers: {
 				"Authorization": "Bearer " + APITOKEN
 			}
@@ -97,31 +96,35 @@ module.exports = {
 			console.log(user);
 			if (interaction.options.getSubcommand == "створити") {
 				if (!user.premium) {
-					await interaction.editReply({
+					console.log(user.premium);
+					interaction.reply({
 						embeds: [
 							new EmbedBuilder()
 							.setDescription(template.icon.n + " Отакої! Схоже, що у Вас ще немає підписки.")
 						], ephemeral: true
 					})
 				} else if (user.organizationId != null) {
-					await interaction.editReply({
+					console.log(user.organizationId)
+					interaction.reply({
 						embeds: [
 							new EmbedBuilder()
 							.setDescription(template.icon.n + " Отакої! Схоже, що у Вас вже є організація.")
 						], ephemeral: true
 					})
 				} else if (user.bank < 2000000) {
-					await interaction.editReply({
+					console.log(user.bank)
+					interaction.reply({
 						embeds: [
 							new EmbedBuilder()
 							.setDescription(template.icon.n + " Отакої! Схоже, що у Вас недостатньо коштів.")
 						], ephemeral: true
 					})
 				} else {
+					console.log("next")
 					var description = interaction.options.getString("description") || "No description yet."
 					var name = interaction.options.getString("displayname")
 					
-					await axios.post(APIKEY + "/orgs", {
+					axios.post(APIKEY + "/orgs", {
 						name: name,
 						balance: 0,
 						description: description,
@@ -133,7 +136,7 @@ module.exports = {
 						}
 					}).then((newOrg) => {
 						console.log(newOrg);
-						interaction.editReply({
+						interaction.reply({
 							embeds: [
 								new EmbedBuilder()
 								.setDescription(template.icon.y + " Організація створена!")
@@ -143,7 +146,7 @@ module.exports = {
 
 					}).catch((err) => {
 						console.log(err)
-						interaction.editReply({
+						interaction.reply({
 							embeds: [
 								new EmbedBuilder()
 								.setDescription(template.icon.n + template.resp.err)
@@ -153,7 +156,7 @@ module.exports = {
 				}
 			} else if (interaction.options.getSubcommand == "редагувати") {
 				if (user.organizationId == null) {
-					interaction.editReply({
+					interaction.reply({
 						embeds: [
 							new EmbedBuilder()
 							.setDescription(template.icon.n + " Отакої! Схоже, що у Вас ще немає організації.")
@@ -167,7 +170,7 @@ module.exports = {
 					}).then(orgd => {
 						var org = orgd.data[0]
 						if (interaction.user.id != org.ownerId) {
-							interaction.editReply({
+							interaction.reply({
 								embeds: [
 									new EmbedBuilder()
 									.setDescription(template.icon.n + " Отакої! Схоже, що у Вас немає прав на редагування.")
@@ -190,7 +193,7 @@ module.exports = {
 								"Authorization": "Bearer " + APITOKEN
 							}
 						}).then(() => {
-							interaction.editReply({
+							interaction.reply({
 								embeds: [
 									new EmbedBuilder()
 									.setDescription(template.icon.y + " Організація оновлена!")
@@ -202,7 +205,7 @@ module.exports = {
 				}
 			}
 		}).catch(() => {
-			interaction.editReply({
+			interaction.reply({
 				embeds: [
 					new EmbedBuilder()
 					.setDescription(template.icon.n + " Отакої! Схоже, що у Вас ще немає профілю.")

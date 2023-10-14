@@ -5,9 +5,6 @@ const {
 	Routes,
 	Collection,
 	Events,
-	ActionRowBuilder,
-	StringSelectMenuBuilder,
-	StringSelectMenuOptionBuilder,
 	EmbedBuilder,
 	Partials
 } = require("discord.js");
@@ -65,61 +62,61 @@ client.on(Events.MessageCreate, async message => {
 	if (!message.author.bot) {
 		console.log(message.author.tag + ": " + message.content)
 		axios.get("https://moondust-starlight.dx-assets.pages.dev/levels.json")
-		.then(lapi => {
+		.then(() => {
 			axios.get(apiKey + "/users?where[discordId][eq]=" + message.author.id, {
 				headers: {
 					"Authorization": "Bearer " + apiToken
 				}
 			}).then(res => {
 				
-				var levels = lapi.data
+				//var levels = lapi.data
 
 				var user = res.data[0]
 				user.chatLevelPoints += 1
 				function checklvl(tempuser) {
 					function levelset(level, tier) {
-					    tempuser.chatLevel = level
-					    tempuser.chatLevelTier = tier
+						tempuser.chatLevel = level
+						tempuser.chatLevelTier = tier
 					}
 					
 					const levels = [
-					  [1000, 6, 0],
-					  [700, 5, 4],
-					  [675, 5, 3],
-					  [650, 5, 2],
-					  [620, 5, 1],
-					  [600, 5, 0],
-					  [590, 4, 4],
-					  [575, 4, 3],
-					  [550, 4, 2],
-					  [520, 4, 1],
-					  [500, 4, 0],
-					  [490, 3, 4],
-					  [475, 3, 3],
-					  [450, 3, 2],
-					  [420, 3, 1],
-					  [400, 3, 0],
-					  [390, 2, 4],
-					  [375, 2, 3],
-					  [350, 2, 2],
-					  [320, 2, 1],
-					  [300, 2, 0],
-					  [190, 1, 4],
-					  [175, 1, 3],
-					  [150, 1, 2],
-					  [120, 1, 1],
-					  [100, 1, 0],
-					  [90, 0, 4],
-					  [75, 0, 3],
-					  [50, 0, 2],
-					  [20, 0, 1],
-					  [0, 0, 0]
+						[1000, 6, 0],
+						[700, 5, 4],
+						[675, 5, 3],
+						[650, 5, 2],
+						[620, 5, 1],
+						[600, 5, 0],
+						[590, 4, 4],
+						[575, 4, 3],
+						[550, 4, 2],
+						[520, 4, 1],
+						[500, 4, 0],
+						[490, 3, 4],
+						[475, 3, 3],
+						[450, 3, 2],
+						[420, 3, 1],
+						[400, 3, 0],
+						[390, 2, 4],
+						[375, 2, 3],
+						[350, 2, 2],
+						[320, 2, 1],
+						[300, 2, 0],
+						[190, 1, 4],
+						[175, 1, 3],
+						[150, 1, 2],
+						[120, 1, 1],
+						[100, 1, 0],
+						[90, 0, 4],
+						[75, 0, 3],
+						[50, 0, 2],
+						[20, 0, 1],
+						[0, 0, 0]
 					];
 
 					let levelIndex = levels.findIndex(level => tempuser.chatLevelPoints >= level[0]);
 					levelIndex = levelIndex === -1 ? levels.length - 1 : levelIndex;
 					
-					const [xpRequired, chatLevel, chatLevelTier] = levels[levelIndex];
+					const [chatLevel, chatLevelTier] = levels[levelIndex];
 					const additionalChatLevelTier = Math.floor(tempuser.chatLevelPoints / 1000);
 					const adjustedChatLevelTier = chatLevelTier + additionalChatLevelTier;
 					levelset(chatLevel, adjustedChatLevelTier);
@@ -140,8 +137,8 @@ client.on(Events.MessageCreate, async message => {
 
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isChatInputCommand || 
-	      interaction.isButton() ||
-	      interaction.isModalSubmit()) return;
+		interaction.isButton() ||
+		interaction.isModalSubmit()) return;
 	axios.get(apiKey + "/users?where[discordId][eq]=" + interaction.user.id, {
 		headers: {
 			"Authorization": "Bearer " + apiToken
@@ -158,7 +155,7 @@ client.on(Events.InteractionCreate, async interaction => {
 			//console.log(interaction)
 			console.log(interaction.user.username + ": /" + interaction.commandName)
 			interaction.options._hoistedOptions.forEach(o => {
-			    console.log({ name: o.name, type: o.type, value: o.value})
+				console.log({ name: o.name, type: o.type, value: o.value})
 			})
 			if (res.data[0] != undefined && res.data[0].premiumExpires < Date.now() && res.data[0].premiumExpires != 0) {
 				client.users.cache.get(interaction.user.id).send({
@@ -181,18 +178,18 @@ client.on(Events.InteractionCreate, async interaction => {
 			const command = interaction.client.commands.get(interaction.commandName);
 			
 			if (!command) {
-			    console.error(`No command matching ${interaction.commandName} was found.`);
-			    return;
+				console.error(`No command matching ${interaction.commandName} was found.`);
+				return;
 			}
 			try {
-			    await command.execute(interaction, client);
+				await command.execute(interaction, client);
 			} catch (error) {
-			    console.error(error);
-			    if (interaction.replied || interaction.deferred) {
-			        await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
-			    } else {
-			        await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-			    }
+				console.error(error);
+				if (interaction.replied || interaction.deferred) {
+					await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+				} else {
+					await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+				}
 			}
 		}
 	})
