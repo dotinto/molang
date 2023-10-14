@@ -9,6 +9,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 	.setName("clear")
 	.setDescription("Прибрати в кімнаті")
+	.name_localizations({ru: "очистить"})
 	.addIntegerOption(
 		option => option
 		.setName("count")
