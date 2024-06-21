@@ -22,6 +22,7 @@ const client = new Client({intents: [
     Partials.Message
   ]});
 const TOKEN = process.env.TOKEN;
+const CLIENTID = process.env.CLIENTID;
 const rest = new REST({ version: '10' }).setToken(TOKEN);
 client.commands = new Collection();
 const commands = [];
@@ -47,7 +48,7 @@ for (const file of commandFiles) {
 	try {
 		console.log(`Started refreshing ${commands.length} application (/) commands.`);
 		const data = await rest.put(
-			Routes.applicationCommands("823592815636250675"),
+			Routes.applicationCommands(CLIENTID),
 			{ body: commands },
 		);
 
